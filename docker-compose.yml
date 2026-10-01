@@ -1,0 +1,130 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cafeteria_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-cafeteria_db}
+      POSTGRES_USER: ${POSTGRES_USER:-cafeteria_user}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-cafeteria_secret}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-cafeteria_user} -d ${POSTGRES_DB:-cafeteria_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    container_name: cafeteria_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cafeteria_backend
+    restart: unless-stopped
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py seed_demo_data &&
+             gunicorn core.wsgi:application --bind 0.0.0.0:8000 --workers 3"
+    environment:
+      - DEBUG=${DEBUG:-0}
+      - SECRET_KEY=${SECRET_KEY:-insecure-prod-key-change-me-in-production}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS:-localhost,127.0.0.1,backend,frontend}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-cafeteria_user}:${POSTGRES_PASSWORD:-cafeteria_secret}@db:5432/${POSTGRES_DB:-cafeteria_db}
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+      - TIME_ZONE=Europe/Moscow
+      - DEFAULT_AUTO_APPROVE=${DEFAULT_AUTO_APPROVE:-1}
+      - MOCK_INTEGRATIONS=${MOCK_INTEGRATIONS:-1}
+    volumes:
+      - ./backend:/app
+      - backend_media:/app/media
+      - backend_static:/app/staticfiles
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cafeteria_worker
+    restart: unless-stopped
+    command: celery -A core worker -l info -c 2
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=${SECRET_KEY:-insecure-prod-key-change-me-in-production}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-cafeteria_user}:${POSTGRES_PASSWORD:-cafeteria_secret}@db:5432/${POSTGRES_DB:-cafeteria_db}
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+      - TIME_ZONE=Europe/Moscow
+      - MOCK_INTEGRATIONS=${MOCK_INTEGRATIONS:-1}
+    volumes:
+      - ./backend:/app
+      - backend_media:/app/media
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  celery_beat:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: cafeteria_beat
+    restart: unless-stopped
+    command: celery -A core beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    environment:
+      - DEBUG=0
+      - SECRET_KEY=${SECRET_KEY:-insecure-prod-key-change-me-in-production}
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-cafeteria_user}:${POSTGRES_PASSWORD:-cafeteria_secret}@db:5432/${POSTGRES_DB:-cafeteria_db}
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+      - TIME_ZONE=Europe/Moscow
+      - MOCK_INTEGRATIONS=${MOCK_INTEGRATIONS:-1}
+    volumes:
+      - ./backend:/app
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: cafeteria_frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
+  backend_media:
+  backend_static:

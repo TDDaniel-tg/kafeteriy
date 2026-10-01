@@ -1,0 +1,3157 @@
+openapi: 3.0.3
+info:
+  title: Кафетерий льгот API
+  version: 1.0.0
+  description: API системы управления материальными и нематериальными поощрениями
+    сотрудников «Кафетерий льгот»
+paths:
+  /api/admin/analytics/accounting-export/:
+    get:
+      operationId: admin_analytics_accounting_export_retrieve
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/admin/analytics/dashboard/:
+    get:
+      operationId: admin_analytics_dashboard_retrieve
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/admin/analytics/payouts-export/:
+    get:
+      operationId: admin_analytics_payouts_export_retrieve
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/admin/anomalies/:
+    get:
+      operationId: admin_anomalies_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAnomalyTicketList'
+          description: ''
+    post:
+      operationId: admin_anomalies_create
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnomalyTicketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AnomalyTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AnomalyTicketRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnomalyTicket'
+          description: ''
+  /api/admin/anomalies/{id}/:
+    get:
+      operationId: admin_anomalies_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this anomaly ticket.
+        required: true
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnomalyTicket'
+          description: ''
+    put:
+      operationId: admin_anomalies_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this anomaly ticket.
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnomalyTicketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AnomalyTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AnomalyTicketRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnomalyTicket'
+          description: ''
+    patch:
+      operationId: admin_anomalies_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this anomaly ticket.
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedAnomalyTicketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedAnomalyTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedAnomalyTicketRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnomalyTicket'
+          description: ''
+    delete:
+      operationId: admin_anomalies_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this anomaly ticket.
+        required: true
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/admin/anomalies/{id}/resolve/:
+    post:
+      operationId: admin_anomalies_resolve_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this anomaly ticket.
+        required: true
+      tags:
+      - admin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AnomalyTicketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AnomalyTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AnomalyTicketRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AnomalyTicket'
+          description: ''
+  /api/admin/audit/:
+    get:
+      operationId: admin_audit_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedAuditLogList'
+          description: ''
+  /api/admin/audit/{id}/:
+    get:
+      operationId: admin_audit_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Запись аудита.
+        required: true
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuditLog'
+          description: ''
+  /api/admin/integrations/:
+    get:
+      operationId: admin_integrations_retrieve
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/admin/integrations/{id}/test/:
+    post:
+      operationId: admin_integrations_test_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/admin/settings/:
+    get:
+      operationId: admin_settings_retrieve
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+    post:
+      operationId: admin_settings_create
+      tags:
+      - admin
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          description: No response body
+  /api/approvals/:
+    get:
+      operationId: approvals_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - approvals
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrderApprovalList'
+          description: ''
+    post:
+      operationId: approvals_create
+      tags:
+      - approvals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderApprovalRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderApprovalRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderApprovalRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderApproval'
+          description: ''
+  /api/approvals/{id}/:
+    get:
+      operationId: approvals_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order approval.
+        required: true
+      tags:
+      - approvals
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderApproval'
+          description: ''
+    put:
+      operationId: approvals_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order approval.
+        required: true
+      tags:
+      - approvals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderApprovalRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderApprovalRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderApprovalRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderApproval'
+          description: ''
+    patch:
+      operationId: approvals_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order approval.
+        required: true
+      tags:
+      - approvals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderApprovalRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderApprovalRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderApprovalRequest'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderApproval'
+          description: ''
+    delete:
+      operationId: approvals_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order approval.
+        required: true
+      tags:
+      - approvals
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/approvals/{id}/decide/:
+    post:
+      operationId: approvals_decide_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this order approval.
+        required: true
+      tags:
+      - approvals
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderApprovalRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderApprovalRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderApprovalRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderApproval'
+          description: ''
+  /api/auth/login/:
+    post:
+      operationId: auth_login_create
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/logout/:
+    post:
+      operationId: auth_logout_create
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/auth/me/:
+    get:
+      operationId: auth_me_retrieve
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/setup-2fa/:
+    post:
+      operationId: auth_setup_2fa_create
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/auth/switch-role/:
+    post:
+      operationId: auth_switch_role_create
+      description: Allows demo prototype switching between roles.
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/auth/verify-2fa/:
+    post:
+      operationId: auth_verify_2fa_create
+      tags:
+      - auth
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/campaigns/:
+    get:
+      operationId: campaigns_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - campaigns
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSelectionWindowList'
+          description: ''
+    post:
+      operationId: campaigns_create
+      tags:
+      - campaigns
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelectionWindowRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SelectionWindowRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SelectionWindowRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectionWindow'
+          description: ''
+  /api/campaigns/{id}/:
+    get:
+      operationId: campaigns_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Окно выбора (Кампания).
+        required: true
+      tags:
+      - campaigns
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectionWindow'
+          description: ''
+    put:
+      operationId: campaigns_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Окно выбора (Кампания).
+        required: true
+      tags:
+      - campaigns
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SelectionWindowRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SelectionWindowRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SelectionWindowRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectionWindow'
+          description: ''
+    patch:
+      operationId: campaigns_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Окно выбора (Кампания).
+        required: true
+      tags:
+      - campaigns
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSelectionWindowRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSelectionWindowRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSelectionWindowRequest'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SelectionWindow'
+          description: ''
+    delete:
+      operationId: campaigns_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Окно выбора (Кампания).
+        required: true
+      tags:
+      - campaigns
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/cart/:
+    get:
+      operationId: cart_retrieve
+      tags:
+      - cart
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/cart/add/:
+    post:
+      operationId: cart_add_create
+      tags:
+      - cart
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/cart/clear/:
+    post:
+      operationId: cart_clear_create
+      tags:
+      - cart
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/cart/remove/:
+    post:
+      operationId: cart_remove_create
+      tags:
+      - cart
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/catalog/:
+    get:
+      operationId: catalog_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedProductList'
+          description: ''
+    post:
+      operationId: catalog_create
+      tags:
+      - catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/catalog/{id}/:
+    get:
+      operationId: catalog_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Позиция каталога.
+        required: true
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    put:
+      operationId: catalog_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Позиция каталога.
+        required: true
+      tags:
+      - catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    patch:
+      operationId: catalog_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Позиция каталога.
+        required: true
+      tags:
+      - catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedProductRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedProductRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedProductRequest'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+    delete:
+      operationId: catalog_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Позиция каталога.
+        required: true
+      tags:
+      - catalog
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/catalog/{id}/archive/:
+    post:
+      operationId: catalog_archive_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Позиция каталога.
+        required: true
+      tags:
+      - catalog
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ProductRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          description: ''
+  /api/comms/banners/:
+    get:
+      operationId: comms_banners_retrieve
+      tags:
+      - comms
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/comms/news/:
+    get:
+      operationId: comms_news_retrieve
+      tags:
+      - comms
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/comms/notifications/:
+    get:
+      operationId: comms_notifications_retrieve
+      tags:
+      - comms
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/comms/notifications/{id}/mark-read/:
+    post:
+      operationId: comms_notifications_mark_read_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - comms
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/employees/:
+    get:
+      operationId: employees_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - employees
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedUserList'
+          description: ''
+    post:
+      operationId: employees_create
+      tags:
+      - employees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/employees/{id}/:
+    get:
+      operationId: employees_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - employees
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    put:
+      operationId: employees_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - employees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    patch:
+      operationId: employees_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - employees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedUserRequest'
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+    delete:
+      operationId: employees_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Пользователь.
+        required: true
+      tags:
+      - employees
+      security:
+      - cookieAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/employees/import_excel/:
+    post:
+      operationId: employees_import_excel_create
+      tags:
+      - employees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/employees/sync_1c/:
+    post:
+      operationId: employees_sync_1c_create
+      tags:
+      - employees
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+          description: ''
+  /api/health-dms/add-family/:
+    post:
+      operationId: health_dms_add_family_create
+      tags:
+      - health-dms
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/health-dms/my-policy/:
+    get:
+      operationId: health_dms_my_policy_retrieve
+      tags:
+      - health-dms
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/health-dms/opt-out/:
+    post:
+      operationId: health_dms_opt_out_create
+      tags:
+      - health-dms
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/orders/:
+    get:
+      operationId: orders_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - orders
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedOrderList'
+          description: ''
+    post:
+      operationId: orders_create
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/orders/{id}/:
+    get:
+      operationId: orders_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - orders
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    put:
+      operationId: orders_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    patch:
+      operationId: orders_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedOrderRequest'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+    delete:
+      operationId: orders_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - orders
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/orders/{id}/cancel/:
+    post:
+      operationId: orders_cancel_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Заказ.
+        required: true
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/orders/checkout/:
+    post:
+      operationId: orders_checkout_create
+      tags:
+      - orders
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OrderRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Order'
+          description: ''
+  /api/points/balance/:
+    get:
+      operationId: points_balance_retrieve
+      tags:
+      - points
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/points/freeze/:
+    post:
+      operationId: points_freeze_create
+      tags:
+      - points
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/points/history/:
+    get:
+      operationId: points_history_retrieve
+      tags:
+      - points
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/points/manual-adjust/:
+    post:
+      operationId: points_manual_adjust_create
+      tags:
+      - points
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/points/transfer/:
+    post:
+      operationId: points_transfer_create
+      tags:
+      - points
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/social/donate/:
+    post:
+      operationId: social_donate_create
+      tags:
+      - social
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/social/funds/:
+    get:
+      operationId: social_funds_retrieve
+      tags:
+      - social
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/support/suggest-perk/:
+    post:
+      operationId: support_suggest_perk_create
+      tags:
+      - support
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+  /api/support/tickets/:
+    get:
+      operationId: support_tickets_list
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      tags:
+      - support
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSupportTicketList'
+          description: ''
+    post:
+      operationId: support_tickets_create
+      tags:
+      - support
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+  /api/support/tickets/{id}/:
+    get:
+      operationId: support_tickets_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Обращение в поддержку.
+        required: true
+      tags:
+      - support
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+    put:
+      operationId: support_tickets_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Обращение в поддержку.
+        required: true
+      tags:
+      - support
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+    patch:
+      operationId: support_tickets_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Обращение в поддержку.
+        required: true
+      tags:
+      - support
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedSupportTicketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedSupportTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedSupportTicketRequest'
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+    delete:
+      operationId: support_tickets_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        description: A unique integer value identifying this Обращение в поддержку.
+        required: true
+      tags:
+      - support
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '204':
+          description: No response body
+  /api/support/tickets/suggest_perk/:
+    post:
+      operationId: support_tickets_suggest_perk_create
+      tags:
+      - support
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/SupportTicketRequest'
+        required: true
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SupportTicket'
+          description: ''
+  /api/surveys/:
+    get:
+      operationId: surveys_retrieve
+      tags:
+      - surveys
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/surveys/{id}/submit/:
+    post:
+      operationId: surveys_submit_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - surveys
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/surveys/lotteries/:
+    get:
+      operationId: surveys_lotteries_retrieve
+      tags:
+      - surveys
+      security:
+      - cookieAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+components:
+  schemas:
+    ActionEnum:
+      enum:
+      - accrual
+      - deduction
+      - refund
+      - transfer
+      - donation
+      - budget_change
+      - role_change
+      - permission_change
+      - setting_change
+      - account_freeze
+      - account_unfreeze
+      - anomaly_action
+      - order_action
+      - login_2fa
+      type: string
+      description: |-
+        * `accrual` - Начисление баллов
+        * `deduction` - Списание баллов
+        * `refund` - Возврат баллов
+        * `transfer` - Перевод баллов
+        * `donation` - Благотворительность
+        * `budget_change` - Изменение бюджета
+        * `role_change` - Смена роли пользователя
+        * `permission_change` - Изменение матрицы прав
+        * `setting_change` - Изменение настройки платформы
+        * `account_freeze` - Заморозка счета
+        * `account_unfreeze` - Разморозка счета
+        * `anomaly_action` - Действие по аномалии
+        * `order_action` - Действие с заказом
+        * `login_2fa` - Подтверждение 2FA
+    AnomalyTicket:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_name:
+          type: string
+          readOnly: true
+        rule_name:
+          type: string
+          readOnly: true
+        ticket_number:
+          type: string
+          maxLength: 50
+        severity:
+          $ref: '#/components/schemas/SeverityEnum'
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/AnomalyTicketStatusEnum'
+        resolution_comment:
+          type: string
+        detected_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        rule:
+          type: integer
+        user:
+          type: integer
+        marked_by:
+          type: integer
+          nullable: true
+      required:
+      - description
+      - detected_at
+      - id
+      - rule
+      - rule_name
+      - ticket_number
+      - updated_at
+      - user
+      - user_name
+    AnomalyTicketRequest:
+      type: object
+      properties:
+        ticket_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        severity:
+          $ref: '#/components/schemas/SeverityEnum'
+        description:
+          type: string
+          minLength: 1
+        status:
+          $ref: '#/components/schemas/AnomalyTicketStatusEnum'
+        resolution_comment:
+          type: string
+        rule:
+          type: integer
+        user:
+          type: integer
+        marked_by:
+          type: integer
+          nullable: true
+      required:
+      - description
+      - rule
+      - ticket_number
+      - user
+    AnomalyTicketStatusEnum:
+      enum:
+      - detected
+      - legitimate
+      - blocked
+      type: string
+      description: |-
+        * `detected` - Обнаружено
+        * `legitimate` - Легитимно
+        * `blocked` - Аккаунт заблокирован
+    ApproverTypeEnum:
+      enum:
+      - none
+      - manager
+      - hr
+      - both
+      type: string
+      description: |-
+        * `none` - Не требуется
+        * `manager` - Руководитель
+        * `hr` - HR
+        * `both` - Руководитель и HR
+    AuditLog:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        actor_name:
+          type: string
+          readOnly: true
+        action:
+          $ref: '#/components/schemas/ActionEnum'
+        entity_type:
+          type: string
+          maxLength: 100
+        entity_id:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+        payload: {}
+        ip_address:
+          type: string
+          maxLength: 50
+        integrity_hash:
+          type: string
+          maxLength: 64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        actor:
+          type: integer
+          nullable: true
+      required:
+      - action
+      - actor_name
+      - created_at
+      - description
+      - entity_type
+      - id
+    GenderEnum:
+      enum:
+      - male
+      - female
+      type: string
+      description: |-
+        * `male` - Мужской
+        * `female` - Женский
+    Order:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          readOnly: true
+        approvals:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderApproval'
+          readOnly: true
+        status_display:
+          type: string
+          readOnly: true
+        can_cancel:
+          type: boolean
+          readOnly: true
+        order_number:
+          type: string
+          maxLength: 50
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        total_points:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        recipient_name:
+          type: string
+          maxLength: 255
+        recipient_email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        recipient_phone:
+          type: string
+          maxLength: 50
+        delivery_address:
+          type: string
+          maxLength: 255
+        delivery_status:
+          type: string
+          maxLength: 50
+        cancellation_reason:
+          type: string
+        is_refunded:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+        user:
+          type: integer
+      required:
+      - approvals
+      - can_cancel
+      - created_at
+      - id
+      - items
+      - order_number
+      - status_display
+      - total_points
+      - updated_at
+      - user
+    OrderApproval:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        approver_name:
+          type: string
+          readOnly: true
+        stage:
+          $ref: '#/components/schemas/StageEnum'
+        status:
+          $ref: '#/components/schemas/OrderApprovalStatusEnum'
+        comment:
+          type: string
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        order:
+          type: integer
+        approver:
+          type: integer
+          nullable: true
+      required:
+      - approver_name
+      - created_at
+      - id
+      - order
+      - stage
+    OrderApprovalRequest:
+      type: object
+      properties:
+        stage:
+          $ref: '#/components/schemas/StageEnum'
+        status:
+          $ref: '#/components/schemas/OrderApprovalStatusEnum'
+        comment:
+          type: string
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        order:
+          type: integer
+        approver:
+          type: integer
+          nullable: true
+      required:
+      - order
+      - stage
+    OrderApprovalStatusEnum:
+      enum:
+      - pending
+      - approved
+      - rejected
+      type: string
+      description: |-
+        * `pending` - Ожидает решения
+        * `approved` - Согласовано
+        * `rejected` - Отклонено
+    OrderItem:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        product:
+          allOf:
+          - $ref: '#/components/schemas/Product'
+          readOnly: true
+        price:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        subtotal:
+          type: string
+          readOnly: true
+        meta_info: {}
+      required:
+      - id
+      - price
+      - product
+      - subtotal
+    OrderItemRequest:
+      type: object
+      properties:
+        price:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        quantity:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        meta_info: {}
+      required:
+      - price
+    OrderRequest:
+      type: object
+      properties:
+        order_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        total_points:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        recipient_name:
+          type: string
+          maxLength: 255
+        recipient_email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        recipient_phone:
+          type: string
+          maxLength: 50
+        delivery_address:
+          type: string
+          maxLength: 255
+        delivery_status:
+          type: string
+          maxLength: 50
+        cancellation_reason:
+          type: string
+        is_refunded:
+          type: boolean
+        user:
+          type: integer
+      required:
+      - order_number
+      - total_points
+      - user
+    OrderStatusEnum:
+      enum:
+      - created
+      - pending_approval
+      - processing
+      - completed
+      - cancelled
+      type: string
+      description: |-
+        * `created` - Создан
+        * `pending_approval` - На согласовании
+        * `processing` - В обработке
+        * `completed` - Выполнен
+        * `cancelled` - Отменён
+    PaginatedAnomalyTicketList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AnomalyTicket'
+    PaginatedAuditLogList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLog'
+    PaginatedOrderApprovalList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/OrderApproval'
+    PaginatedOrderList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Order'
+    PaginatedProductList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+    PaginatedSelectionWindowList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SelectionWindow'
+    PaginatedSupportTicketList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SupportTicket'
+    PaginatedUserList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+    PatchedAnomalyTicketRequest:
+      type: object
+      properties:
+        ticket_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        severity:
+          $ref: '#/components/schemas/SeverityEnum'
+        description:
+          type: string
+          minLength: 1
+        status:
+          $ref: '#/components/schemas/AnomalyTicketStatusEnum'
+        resolution_comment:
+          type: string
+        rule:
+          type: integer
+        user:
+          type: integer
+        marked_by:
+          type: integer
+          nullable: true
+    PatchedOrderApprovalRequest:
+      type: object
+      properties:
+        stage:
+          $ref: '#/components/schemas/StageEnum'
+        status:
+          $ref: '#/components/schemas/OrderApprovalStatusEnum'
+        comment:
+          type: string
+        decided_at:
+          type: string
+          format: date-time
+          nullable: true
+        order:
+          type: integer
+        approver:
+          type: integer
+          nullable: true
+    PatchedOrderRequest:
+      type: object
+      properties:
+        order_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        status:
+          $ref: '#/components/schemas/OrderStatusEnum'
+        total_points:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        recipient_name:
+          type: string
+          maxLength: 255
+        recipient_email:
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        recipient_phone:
+          type: string
+          maxLength: 50
+        delivery_address:
+          type: string
+          maxLength: 255
+        delivery_status:
+          type: string
+          maxLength: 50
+        cancellation_reason:
+          type: string
+        is_refunded:
+          type: boolean
+        user:
+          type: integer
+    PatchedProductRequest:
+      type: object
+      properties:
+        slug:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        category:
+          type: string
+          minLength: 1
+          maxLength: 100
+        supplier:
+          type: string
+          minLength: 1
+          maxLength: 150
+        price:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        image:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 500
+          - type: string
+            maxLength: 0
+        tag:
+          type: string
+          maxLength: 50
+        product_type:
+          $ref: '#/components/schemas/ProductTypeEnum'
+        description:
+          type: string
+          minLength: 1
+        terms:
+          type: string
+        pdf_attachment:
+          type: string
+          format: binary
+          nullable: true
+        is_general_offer:
+          type: boolean
+        is_active:
+          type: boolean
+        is_archived:
+          type: boolean
+        requires_approval:
+          type: boolean
+        approver_type:
+          $ref: '#/components/schemas/ApproverTypeEnum'
+        available_seats:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        min_booking_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+    PatchedSelectionWindowRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        rule_mode:
+          $ref: '#/components/schemas/RuleModeEnum'
+        is_active:
+          type: boolean
+        target_segments: {}
+        description:
+          type: string
+    PatchedSupportTicketRequest:
+      type: object
+      properties:
+        ticket_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          minLength: 1
+        status:
+          $ref: '#/components/schemas/SupportTicketStatusEnum'
+        sla_deadline:
+          type: string
+          format: date-time
+          nullable: true
+        is_escalated:
+          type: boolean
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+        user:
+          type: integer
+    PatchedUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Имя пользователя
+          description: Обязательное поле. Не более 150 символов. Только буквы, цифры
+            и символы @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Адрес электронной почты
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          title: Имя
+          maxLength: 150
+        last_name:
+          type: string
+          title: Фамилия
+          maxLength: 150
+        middle_name:
+          type: string
+          maxLength: 150
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        department:
+          type: string
+          maxLength: 150
+        grade:
+          type: string
+          maxLength: 50
+        hire_date:
+          type: string
+          format: date
+          nullable: true
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        city:
+          type: string
+          maxLength: 100
+        delivery_address:
+          type: string
+          maxLength: 255
+        segment:
+          type: string
+          maxLength: 100
+        is_frozen:
+          type: boolean
+        has_unspent_main_vacation:
+          type: boolean
+        flexible_schedule_active:
+          type: boolean
+        onboarding_completed:
+          type: boolean
+        totp_enabled:
+          type: boolean
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        slug:
+          type: string
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+          maxLength: 255
+        category:
+          type: string
+          maxLength: 100
+        supplier:
+          type: string
+          maxLength: 150
+        price:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        image:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 500
+          - type: string
+            maxLength: 0
+        tag:
+          type: string
+          maxLength: 50
+        product_type:
+          $ref: '#/components/schemas/ProductTypeEnum'
+        description:
+          type: string
+        terms:
+          type: string
+        pdf_attachment:
+          type: string
+          format: uri
+          nullable: true
+        is_general_offer:
+          type: boolean
+        is_active:
+          type: boolean
+        is_archived:
+          type: boolean
+        requires_approval:
+          type: boolean
+        approver_type:
+          $ref: '#/components/schemas/ApproverTypeEnum'
+        available_seats:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        min_booking_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - description
+      - id
+      - name
+      - slug
+      - updated_at
+    ProductRequest:
+      type: object
+      properties:
+        slug:
+          type: string
+          minLength: 1
+          maxLength: 100
+          pattern: ^[-a-zA-Z0-9_]+$
+        name:
+          type: string
+          minLength: 1
+          maxLength: 255
+        category:
+          type: string
+          minLength: 1
+          maxLength: 100
+        supplier:
+          type: string
+          minLength: 1
+          maxLength: 150
+        price:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        image:
+          oneOf:
+          - type: string
+            format: uri
+            maxLength: 500
+          - type: string
+            maxLength: 0
+        tag:
+          type: string
+          maxLength: 50
+        product_type:
+          $ref: '#/components/schemas/ProductTypeEnum'
+        description:
+          type: string
+          minLength: 1
+        terms:
+          type: string
+        pdf_attachment:
+          type: string
+          format: binary
+          nullable: true
+        is_general_offer:
+          type: boolean
+        is_active:
+          type: boolean
+        is_archived:
+          type: boolean
+        requires_approval:
+          type: boolean
+        approver_type:
+          $ref: '#/components/schemas/ApproverTypeEnum'
+        available_seats:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: -9223372036854775808
+          format: int64
+          nullable: true
+        min_booking_days:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+      required:
+      - description
+      - name
+      - slug
+    ProductTypeEnum:
+      enum:
+      - physical
+      - digital
+      - virtual_card
+      - doc_benefit
+      - gift_service
+      - booked_service
+      - accommodation
+      - education
+      - vacation_days
+      - flexible_schedule
+      type: string
+      description: |-
+        * `physical` - Физический товар
+        * `digital` - Цифровой товар / сертификат
+        * `virtual_card` - Виртуальная банковская карта
+        * `doc_benefit` - Льгота с подтверждающими документами
+        * `gift_service` - Подарочный сервис (Giftery/ПВК)
+        * `booked_service` - Услуга по записи
+        * `accommodation` - Проживание / база отдыха
+        * `education` - Обучение и сертификация
+        * `vacation_days` - Дополнительный день отпуска
+        * `flexible_schedule` - Гибкий график (нефинансовая льгота)
+    RoleEnum:
+      enum:
+      - employee
+      - maternity
+      - vip
+      - hr
+      - admin
+      - exclusion
+      type: string
+      description: |-
+        * `employee` - Сотрудник
+        * `maternity` - Декрет
+        * `vip` - ВИП
+        * `hr` - HR
+        * `admin` - Администратор
+        * `exclusion` - Exclusion (хламовник)
+    RuleModeEnum:
+      enum:
+      - inform
+      - restrict
+      type: string
+      description: |-
+        * `inform` - Информирует (изменения разрешены, сотрудник уведомляется)
+        * `restrict` - Ограничивает (вне окна блокируется оформление и отмена)
+    SelectionWindow:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        is_open:
+          type: boolean
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        rule_mode:
+          $ref: '#/components/schemas/RuleModeEnum'
+        is_active:
+          type: boolean
+        target_segments: {}
+        description:
+          type: string
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        updated_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - end_date
+      - id
+      - is_open
+      - name
+      - start_date
+      - updated_at
+    SelectionWindowRequest:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+          maxLength: 200
+        start_date:
+          type: string
+          format: date-time
+        end_date:
+          type: string
+          format: date-time
+        rule_mode:
+          $ref: '#/components/schemas/RuleModeEnum'
+        is_active:
+          type: boolean
+        target_segments: {}
+        description:
+          type: string
+      required:
+      - end_date
+      - name
+      - start_date
+    SeverityEnum:
+      enum:
+      - low
+      - medium
+      - high
+      - critical
+      type: string
+      description: |-
+        * `low` - Низкая
+        * `medium` - Средняя
+        * `high` - Высокая
+        * `critical` - Критическая
+    StageEnum:
+      enum:
+      - manager
+      - hr
+      - custom
+      type: string
+      description: |-
+        * `manager` - Руководитель
+        * `hr` - HR служба
+        * `custom` - Дополнительный согласующий
+    SupportTicket:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user_name:
+          type: string
+          readOnly: true
+        status_display:
+          type: string
+          readOnly: true
+        ticket_number:
+          type: string
+          maxLength: 50
+        subject:
+          type: string
+          maxLength: 255
+        description:
+          type: string
+        status:
+          $ref: '#/components/schemas/SupportTicketStatusEnum'
+        sla_deadline:
+          type: string
+          format: date-time
+          nullable: true
+        is_escalated:
+          type: boolean
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+        user:
+          type: integer
+      required:
+      - created_at
+      - description
+      - id
+      - status_display
+      - subject
+      - ticket_number
+      - user
+      - user_name
+    SupportTicketRequest:
+      type: object
+      properties:
+        ticket_number:
+          type: string
+          minLength: 1
+          maxLength: 50
+        subject:
+          type: string
+          minLength: 1
+          maxLength: 255
+        description:
+          type: string
+          minLength: 1
+        status:
+          $ref: '#/components/schemas/SupportTicketStatusEnum'
+        sla_deadline:
+          type: string
+          format: date-time
+          nullable: true
+        is_escalated:
+          type: boolean
+        resolved_at:
+          type: string
+          format: date-time
+          nullable: true
+        user:
+          type: integer
+      required:
+      - description
+      - subject
+      - ticket_number
+      - user
+    SupportTicketStatusEnum:
+      enum:
+      - new
+      - in_progress
+      - waiting_provider
+      - resolved
+      - closed
+      type: string
+      description: |-
+        * `new` - Новое
+        * `in_progress` - В обработке
+        * `waiting_provider` - Ожидает поставщика
+        * `resolved` - Решено
+        * `closed` - Закрыто
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          title: Имя пользователя
+          description: Обязательное поле. Не более 150 символов. Только буквы, цифры
+            и символы @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Адрес электронной почты
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          title: Имя
+          maxLength: 150
+        last_name:
+          type: string
+          title: Фамилия
+          maxLength: 150
+        middle_name:
+          type: string
+          maxLength: 150
+        full_name:
+          type: string
+          readOnly: true
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        department:
+          type: string
+          maxLength: 150
+        grade:
+          type: string
+          maxLength: 50
+        hire_date:
+          type: string
+          format: date
+          nullable: true
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        city:
+          type: string
+          maxLength: 100
+        delivery_address:
+          type: string
+          maxLength: 255
+        segment:
+          type: string
+          maxLength: 100
+        is_frozen:
+          type: boolean
+        has_unspent_main_vacation:
+          type: boolean
+        flexible_schedule_active:
+          type: boolean
+        onboarding_completed:
+          type: boolean
+        totp_enabled:
+          type: boolean
+        available_balance:
+          type: string
+          readOnly: true
+        total_balance:
+          type: string
+          readOnly: true
+      required:
+      - available_balance
+      - full_name
+      - id
+      - total_balance
+      - username
+    UserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          minLength: 1
+          title: Имя пользователя
+          description: Обязательное поле. Не более 150 символов. Только буквы, цифры
+            и символы @/./+/-/_.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+        email:
+          title: Адрес электронной почты
+          oneOf:
+          - type: string
+            format: email
+            maxLength: 254
+          - type: string
+            maxLength: 0
+        first_name:
+          type: string
+          title: Имя
+          maxLength: 150
+        last_name:
+          type: string
+          title: Фамилия
+          maxLength: 150
+        middle_name:
+          type: string
+          maxLength: 150
+        role:
+          $ref: '#/components/schemas/RoleEnum'
+        department:
+          type: string
+          maxLength: 150
+        grade:
+          type: string
+          maxLength: 50
+        hire_date:
+          type: string
+          format: date
+          nullable: true
+        birth_date:
+          type: string
+          format: date
+          nullable: true
+        gender:
+          $ref: '#/components/schemas/GenderEnum'
+        city:
+          type: string
+          maxLength: 100
+        delivery_address:
+          type: string
+          maxLength: 255
+        segment:
+          type: string
+          maxLength: 100
+        is_frozen:
+          type: boolean
+        has_unspent_main_vacation:
+          type: boolean
+        flexible_schedule_active:
+          type: boolean
+        onboarding_completed:
+          type: boolean
+        totp_enabled:
+          type: boolean
+      required:
+      - username
+  securitySchemes:
+    cookieAuth:
+      type: apiKey
+      in: cookie
+      name: sessionid

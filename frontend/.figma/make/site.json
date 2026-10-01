@@ -1,0 +1,10 @@
+{
+  "description": "A corporate platform enabling employees to spend internal currency on benefits like health insurance, training, and gifts, enhancing workplace satisfaction.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
