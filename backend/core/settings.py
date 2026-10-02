@@ -150,9 +150,15 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
 }
 
-# CORS
+# CORS & CSRF
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+CSRF_TRUSTED_ORIGINS = [
+    o.strip() for o in os.environ.get(
+        'CSRF_TRUSTED_ORIGINS',
+        'https://*.onrender.com,https://*.railway.app,https://*.koyeb.app,http://localhost:8000,http://127.0.0.1:8000'
+    ).split(',') if o.strip()
+]
 
 # Celery
 CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL', 'redis://localhost:6379/1')

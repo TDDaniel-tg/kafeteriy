@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse, FileResponse, Http404
 from rest_framework.routers import DefaultRouter
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 
@@ -88,5 +88,37 @@ urlpatterns = [
     path('api/', include(router.urls)),
 ]
 
+# SPA frontend serving for unified deployment
+import os
+import mimetypes
+
+FRONTEND_DIST_DIR = os.environ.get(
+    'FRONTEND_DIST_DIR',
+    os.path.join(settings.BASE_DIR, '..', 'frontend', 'dist')
+    if os.path.exists(os.path.join(settings.BASE_DIR, '..', 'frontend', 'dist'))
+    else os.path.join(settings.BASE_DIR, 'frontend_dist')
+)
+
+def spa_index_view(request):
+    index_file = os.path.join(FRONTEND_DIST_DIR, 'index.html')
+    if os.path.exists(index_file):
+        with open(index_file, 'r', encoding='utf-8') as f:
+            return HttpResponse(f.read(), content_type='text/html')
+    return HttpResponse("<h1>Кафетерий льгот</h1><p>Frontend dist not found. Please build frontend first.</p>", status=404)
+
+def spa_assets_view(request, path):
+    file_path = os.path.join(FRONTEND_DIST_DIR, 'assets', path)
+    if os.path.exists(file_path) and os.path.isfile(file_path):
+        content_type, _ = mimetypes.guess_type(file_path)
+        return FileResponse(open(file_path, 'rb'), content_type=content_type or 'application/octet-stream')
+    raise Http404("Asset not found")
+
+from django.urls import re_path
+urlpatterns += [
+    re_path(r'^assets/(?P<path>.*)$', spa_assets_view, name='spa_assets'),
+    re_path(r'^(?!api/|admin/).*$', spa_index_view, name='spa_index'),
+]
+
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+

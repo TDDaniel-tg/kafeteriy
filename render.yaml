@@ -1,0 +1,19 @@
+# Render.com Blueprint for «Кафетерий льгот»
+# Author: TDDaniel - https://tddaniel.netlify.app
+
+services:
+  - type: web
+    name: kafeteriy-app
+    runtime: docker
+    dockerfilePath: Dockerfile
+    plan: free
+    region: frankfurt
+    envVars:
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: "*"
+      - key: CORS_ALLOW_ALL_ORIGINS
+        value: "True"
